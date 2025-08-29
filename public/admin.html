@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Hotmart Client Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1E1E1E;
+            color: #FFFFFF;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 32px;
+            background: #2A2A2A;
+            border-radius: 16px;
+            border: 1px solid #3A3A3A;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: #FFFFFF;
+            font-size: 2.8em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: #AAAAAA;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .admin-section {
+            background: #2A2A2A;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            border: 1px solid #3A3A3A;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            color: #4A9EFF;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed #3A3A3A;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #4A9EFF;
+            background: #2F2F2F;
+        }
+
+        .upload-area.dragover {
+            border-color: #4A9EFF;
+            background: #2F2F2F;
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            color: #AAAAAA;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            color: #AAAAAA;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .selected-file {
+            background: #2F2F2F;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border: 1px solid #3A3A3A;
+        }
+
+        .file-name {
+            color: #4A9EFF;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            color: #AAAAAA;
+            font-size: 0.9em;
+        }
+
+        .update-btn {
+            background: #4A9EFF;
+            color: #FFFFFF;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .update-btn:hover {
+            background: #3A8EFF;
+        }
+
+        .update-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .status-section {
+            margin-top: 24px;
+        }
+
+        .status-item {
+            background: #2F2F2F;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3A3A3A;
+        }
+
+        .status-item.success {
+            border-left-color: #51CF66;
+        }
+
+        .status-item.error {
+            border-left-color: #FF6B6B;
+        }
+
+        .status-item.processing {
+            border-left-color: #4A9EFF;
+        }
+
+        .status-title {
+            color: #FFFFFF;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-message {
+            color: #AAAAAA;
+            font-size: 0.9em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: #2F2F2F;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #3A3A3A;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            color: #4A9EFF;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #AAAAAA;
+            font-size: 0.9em;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #4A9EFF;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .platform-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            background: #2F2F2F;
+            color: #AAAAAA;
+            border: 1px solid #3A3A3A;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: #3A3A3A;
+            color: #FFFFFF;
+        }
+
+        .tab-btn.active {
+            background: #4A9EFF;
+            color: #FFFFFF;
+            border-color: #4A9EFF;
+        }
+
+        .upload-section h3 {
+            color: #4A9EFF;
+            margin-bottom: 16px;
+            font-size: 1.2em;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4A9EFF;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                padding: 24px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .admin-section {
+                padding: 24px;
+            }
+            
+            .upload-area {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Voltar para Pesquisa</a>
+        
+        <div class="header">
+            <h1>⚙️ Painel Administrativo</h1>
+            <p>Gerencie o sistema de pesquisa de clientes Hotmart</p>
+        </div>
+
+        <div class="admin-section">
+            <div class="section-title">📊 Estatísticas Atuais</div>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalRecords">-</div>
+                    <div class="stat-label">Total de Registros</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="uniqueClients">-</div>
+                    <div class="stat-label">Clientes Únicos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeSubscriptions">-</div>
+                    <div class="stat-label">Assinaturas Ativas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="lastUpdate">-</div>
+                    <div class="stat-label">Última Atualização</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <div class="section-title">🔄 Atualizar CSVs</div>
+            
+            <div class="platform-tabs">
+                <button class="tab-btn active" data-platform="hotmart">Hotmart</button>
+                <button class="tab-btn" data-platform="cakto">Cakto</button>
+            </div>
+
+            <div class="upload-section" id="hotmartSection">
+                <h3>📊 Hotmart</h3>
+                <div class="upload-area" id="uploadAreaHotmart">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Clique ou arraste o arquivo CSV do Hotmart</div>
+                    <div class="upload-hint">Apenas arquivos .csv são aceitos</div>
+                    <input type="file" id="fileInputHotmart" class="file-input" accept=".csv">
+                </div>
+
+                <div id="selectedFileHotmart" class="selected-file" style="display: none;">
+                    <div class="file-name" id="fileNameHotmart"></div>
+                    <div class="file-size" id="fileSizeHotmart"></div>
+                </div>
+
+                <button class="update-btn" id="updateBtnHotmart" disabled>
+                    Atualizar Hotmart
+                </button>
+            </div>
+
+            <div class="upload-section" id="caktoSection" style="display: none;">
+                <h3>🎯 Cakto</h3>
+                <div class="upload-area" id="uploadAreaCakto">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Clique ou arraste o arquivo CSV da Cakto</div>
+                    <div class="upload-hint">Apenas arquivos .csv são aceitos</div>
+                    <input type="file" id="fileInputCakto" class="file-input" accept=".csv">
+                </div>
+
+                <div id="selectedFileCakto" class="selected-file" style="display: none;">
+                    <div class="file-name" id="fileNameCakto"></div>
+                    <div class="file-size" id="fileSizeCakto"></div>
+                </div>
+
+                <button class="update-btn" id="updateBtnCakto" disabled>
+                    Atualizar Cakto
+                </button>
+            </div>
+
+            <div class="status-section" id="statusSection"></div>
+        </div>
+    </div>
+
+    <script>
+        class AdminPanel {
+            constructor() {
+                this.apiBase = '/api';
+                this.currentPlatform = 'hotmart';
+                
+                // Elementos Hotmart
+                this.uploadAreaHotmart = document.getElementById('uploadAreaHotmart');
+                this.fileInputHotmart = document.getElementById('fileInputHotmart');
+                this.selectedFileHotmart = document.getElementById('selectedFileHotmart');
+                this.fileNameHotmart = document.getElementById('fileNameHotmart');
+                this.fileSizeHotmart = document.getElementById('fileSizeHotmart');
+                this.updateBtnHotmart = document.getElementById('updateBtnHotmart');
+                
+                // Elementos Cakto
+                this.uploadAreaCakto = document.getElementById('uploadAreaCakto');
+                this.fileInputCakto = document.getElementById('fileInputCakto');
+                this.selectedFileCakto = document.getElementById('selectedFileCakto');
+                this.fileNameCakto = document.getElementById('fileNameCakto');
+                this.fileSizeCakto = document.getElementById('fileSizeCakto');
+                this.updateBtnCakto = document.getElementById('updateBtnCakto');
+                
+                this.statusSection = document.getElementById('statusSection');
+                
+                this.setupEventListeners();
+                this.loadStats();
+            }
+
+            setupEventListeners() {
+                // Tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.switchPlatform(e.target.dataset.platform);
+                    });
+                });
+
+                // Hotmart upload area click
+                this.uploadAreaHotmart.addEventListener('click', () => {
+                    this.fileInputHotmart.click();
+                });
+
+                // Hotmart file input change
+                this.fileInputHotmart.addEventListener('change', (e) => {
+                    this.handleFileSelect(e.target.files[0], 'hotmart');
+                });
+
+                // Hotmart drag and drop
+                this.uploadAreaHotmart.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    this.uploadAreaHotmart.classList.add('dragover');
+                });
+
+                this.uploadAreaHotmart.addEventListener('dragleave', () => {
+                    this.uploadAreaHotmart.classList.remove('dragover');
+                });
+
+                this.uploadAreaHotmart.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    this.uploadAreaHotmart.classList.remove('dragover');
+                    this.handleFileSelect(e.dataTransfer.files[0], 'hotmart');
+                });
+
+                // Hotmart update button
+                this.updateBtnHotmart.addEventListener('click', () => {
+                    this.updateDatabase('hotmart');
+                });
+
+                // Cakto upload area click
+                this.uploadAreaCakto.addEventListener('click', () => {
+                    this.fileInputCakto.click();
+                });
+
+                // Cakto file input change
+                this.fileInputCakto.addEventListener('change', (e) => {
+                    this.handleFileSelect(e.target.files[0], 'cakto');
+                });
+
+                // Cakto drag and drop
+                this.uploadAreaCakto.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    this.uploadAreaCakto.classList.add('dragover');
+                });
+
+                this.uploadAreaCakto.addEventListener('dragleave', () => {
+                    this.uploadAreaCakto.classList.remove('dragover');
+                });
+
+                this.uploadAreaCakto.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    this.uploadAreaCakto.classList.remove('dragover');
+                    this.handleFileSelect(e.dataTransfer.files[0], 'cakto');
+                });
+
+                // Cakto update button
+                this.updateBtnCakto.addEventListener('click', () => {
+                    this.updateDatabase('cakto');
+                });
+            }
+
+            switchPlatform(platform) {
+                this.currentPlatform = platform;
+                
+                // Atualizar tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-platform="${platform}"]`).classList.add('active');
+                
+                // Mostrar seção correspondente
+                document.getElementById('hotmartSection').style.display = platform === 'hotmart' ? 'block' : 'none';
+                document.getElementById('caktoSection').style.display = platform === 'cakto' ? 'block' : 'none';
+            }
+
+            handleFileSelect(file, platform) {
+                if (!file) return;
+
+                if (!file.name.toLowerCase().endsWith('.csv')) {
+                    this.showStatus('error', 'Erro', 'Apenas arquivos CSV são aceitos');
+                    return;
+                }
+
+                if (platform === 'hotmart') {
+                    this.fileNameHotmart.textContent = file.name;
+                    this.fileSizeHotmart.textContent = this.formatFileSize(file.size);
+                    this.selectedFileHotmart.style.display = 'block';
+                    this.updateBtnHotmart.disabled = false;
+                } else if (platform === 'cakto') {
+                    this.fileNameCakto.textContent = file.name;
+                    this.fileSizeCakto.textContent = this.formatFileSize(file.size);
+                    this.selectedFileCakto.style.display = 'block';
+                    this.updateBtnCakto.disabled = false;
+                }
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            async loadStats() {
+                try {
+                    const response = await fetch(`${this.apiBase}/stats`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.updateStats(data.data);
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar estatísticas:', error);
+                }
+            }
+
+            updateStats(stats) {
+                // Estatísticas totais
+                document.getElementById('totalRecords').textContent = stats.total?.total?.toLocaleString() || '0';
+                document.getElementById('uniqueClients').textContent = stats.total?.clientes_unicos?.toLocaleString() || '0';
+                document.getElementById('activeSubscriptions').textContent = stats.total?.ativos?.toLocaleString() || '0';
+                
+                // Formatar última atualização
+                const lastUpdate = new Date().toLocaleString('pt-BR');
+                document.getElementById('lastUpdate').textContent = lastUpdate;
+            }
+
+            async updateDatabase(platform) {
+                let file, updateBtn, fileInput, selectedFile;
+                
+                if (platform === 'hotmart') {
+                    file = this.fileInputHotmart.files[0];
+                    updateBtn = this.updateBtnHotmart;
+                    fileInput = this.fileInputHotmart;
+                    selectedFile = this.selectedFileHotmart;
+                } else if (platform === 'cakto') {
+                    file = this.fileInputCakto.files[0];
+                    updateBtn = this.updateBtnCakto;
+                    fileInput = this.fileInputCakto;
+                    selectedFile = this.selectedFileCakto;
+                }
+                
+                if (!file) return;
+
+                updateBtn.disabled = true;
+                updateBtn.innerHTML = '<span class="loading"></span>Atualizando...';
+
+                try {
+                    // Upload do arquivo
+                    this.showStatus('processing', 'Processando', `Fazendo upload do arquivo CSV ${platform}...`);
+                    
+                    const formData = new FormData();
+                    formData.append('csv', file);
+
+                    const uploadResponse = await fetch(`${this.apiBase}/upload-csv`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!uploadResponse.ok) {
+                        throw new Error('Erro no upload do arquivo');
+                    }
+
+                    // Processar CSV
+                    this.showStatus('processing', 'Processando', `Convertendo CSV ${platform} para banco de dados...`);
+                    
+                    const processEndpoint = platform === 'cakto' ? '/api/process-cakto' : '/api/process';
+                    const processResponse = await fetch(`${this.apiBase}${processEndpoint}`, {
+                        method: 'POST'
+                    });
+
+                    const processData = await processResponse.json();
+
+                    if (processData.success) {
+                        this.showStatus('success', 'Sucesso', `Banco de dados ${platform} atualizado com sucesso!`);
+                        this.loadStats(); // Recarregar estatísticas
+                        
+                        // Limpar seleção
+                        fileInput.value = '';
+                        selectedFile.style.display = 'none';
+                        updateBtn.disabled = true;
+                    } else {
+                        throw new Error(processData.error || 'Erro ao processar CSV');
+                    }
+
+                } catch (error) {
+                    console.error('Erro na atualização:', error);
+                    this.showStatus('error', 'Erro', error.message || 'Erro ao atualizar banco de dados');
+                } finally {
+                    updateBtn.disabled = false;
+                    updateBtn.textContent = `Atualizar ${platform === 'cakto' ? 'Cakto' : 'Hotmart'}`;
+                }
+            }
+
+            showStatus(type, title, message) {
+                const statusItem = document.createElement('div');
+                statusItem.className = `status-item ${type}`;
+                statusItem.innerHTML = `
+                    <div class="status-title">${title}</div>
+                    <div class="status-message">${message}</div>
+                `;
+
+                this.statusSection.appendChild(statusItem);
+
+                // Remover status após 5 segundos (exceto erros)
+                if (type !== 'error') {
+                    setTimeout(() => {
+                        statusItem.remove();
+                    }, 5000);
+                }
+            }
+        }
+
+        // Inicializar painel administrativo
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminPanel();
+        });
+    </script>
+</body>
+</html>

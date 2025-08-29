@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Pesquisa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; }
+        input { padding: 10px; width: 300px; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Pesquisa Hotmart</h1>
+    
+    <div class="test-section">
+        <h3>1. Teste de Carregamento</h3>
+        <button onclick="testLoad()">Carregar CSV</button>
+        <div id="loadResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>2. Teste de Pesquisa</h3>
+        <input type="text" id="searchInput" placeholder="Digite para pesquisar...">
+        <button onclick="testSearch()">Pesquisar</button>
+        <div id="searchResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>3. Teste de SearchEngine</h3>
+        <button onclick="testSearchEngine()">Testar SearchEngine</button>
+        <div id="engineResult"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="/search-logic.js"></script>
+    
+    <script>
+        let searchEngine = null;
+        let testData = null;
+
+        function log(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+
+        async function testLoad() {
+            try {
+                log('loadResult', '🔄 Carregando CSV...');
+                
+                const response = await fetch('/relatorio-hotmart.csv');
+                const csvText = await response.text();
+                
+                log('loadResult', `✅ CSV carregado (${csvText.length} caracteres)`);
+                
+                // Testar parse
+                Papa.parse(csvText, {
+                    header: true,
+                    delimiter: ';',
+                    complete: (results) => {
+                        testData = results.data.filter(row => row.Cliente && row.Cliente.trim() !== '');
+                        log('loadResult', `✅ Parseado ${testData.length} registros válidos`);
+                        console.log('Primeiro registro:', testData[0]);
+                    },
+                    error: (error) => {
+                        log('loadResult', `❌ Erro no parse: ${error.message}`, true);
+                    }
+                });
+                
+            } catch (error) {
+                log('loadResult', `❌ Erro ao carregar: ${error.message}`, true);
+            }
+        }
+
+        async function testSearch() {
+            if (!testData) {
+                log('searchResult', '❌ Carregue os dados primeiro', true);
+                return;
+            }
+
+            const searchTerm = document.getElementById('searchInput').value;
+            if (!searchTerm) {
+                log('searchResult', '❌ Digite um termo para pesquisar', true);
+                return;
+            }
+
+            try {
+                log('searchResult', `🔍 Pesquisando por: "${searchTerm}"`);
+                
+                // Pesquisa simples
+                const results = testData.filter(record => {
+                    const cliente = (record.Cliente || '').toLowerCase();
+                    const email = (record.Email || '').toLowerCase();
+                    const telefone = (record.Telefone || '').toLowerCase();
+                    const ddd = (record.DDD || '').toLowerCase();
+                    
+                    const phoneNormalized = `${ddd}${telefone}`.replace(/\D/g, '');
+                    const searchNormalized = searchTerm.toLowerCase().replace(/\D/g, '');
+                    
+                    return cliente.includes(searchTerm.toLowerCase()) || 
+                           email.includes(searchTerm.toLowerCase()) || 
+                           phoneNormalized.includes(searchNormalized);
+                });
+
+                log('searchResult', `✅ Encontrados ${results.length} resultados`);
+                
+                if (results.length > 0) {
+                    const firstResult = results[0];
+                    log('searchResult', `
+                        <strong>Primeiro resultado:</strong><br>
+                        Nome: ${firstResult.Cliente}<br>
+                        Email: ${firstResult.Email}<br>
+                        Telefone: ${firstResult.DDD}${firstResult.Telefone}<br>
+                        Status: ${firstResult.Status}
+                    `);
+                }
+                
+            } catch (error) {
+                log('searchResult', `❌ Erro na pesquisa: ${error.message}`, true);
+            }
+        }
+
+        function testSearchEngine() {
+            try {
+                log('engineResult', '🔄 Testando SearchEngine...');
+                
+                if (typeof HotmartClientSearch === 'undefined') {
+                    log('engineResult', '❌ HotmartClientSearch não está disponível', true);
+                    return;
+                }
+
+                searchEngine = new HotmartClientSearch();
+                log('engineResult', '✅ SearchEngine criado com sucesso');
+                
+                // Testar métodos básicos
+                const testText = searchEngine.normalizeText('João Silva');
+                log('engineResult', `✅ Normalização: "João Silva" → "${testText}"`);
+                
+                const testPhone = searchEngine.formatPhone('11', '999999999');
+                log('engineResult', `✅ Formatação telefone: (11) 99999-9999`);
+                
+            } catch (error) {
+                log('engineResult', `❌ Erro no SearchEngine: ${error.message}`, true);
+            }
+        }
+
+        // Teste automático ao carregar
+        window.addEventListener('load', () => {
+            testSearchEngine();
+        });
+    </script>
+</body>
+</html>

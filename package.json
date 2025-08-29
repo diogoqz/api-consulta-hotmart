@@ -1,0 +1,34 @@
+{
+  "name": "hotmart-client-search",
+  "version": "1.0.0",
+  "description": "Sistema de pesquisa de clientes Hotmart",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "vite preview",
+    "start": "node server.js",
+    "server": "node server.js",
+    "server:dev": "nodemon server.js",
+    "db:process": "node csv-to-sqlite.js",
+    "db:search": "node -e \"const HotmartCSVProcessor = require('./csv-to-sqlite.js'); const processor = new HotmartCSVProcessor(); processor.search(process.argv[1] || 'test').then(console.log).catch(console.error)\"",
+    "db:stats": "node -e \"const processor = require('./csv-to-sqlite.js'); processor.process().then(stats => console.log('📊', stats)).catch(console.error)\"",
+    "setup": "npm run db:process && npm run server"
+  },
+  "dependencies": {
+    "vue": "^3.3.4",
+    "papaparse": "^5.4.1",
+    "sqlite3": "^5.1.6",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.4.5"
+  },
+  "keywords": ["vue", "hotmart", "client-search"],
+  "author": "Diogo",
+  "license": "MIT"
+}

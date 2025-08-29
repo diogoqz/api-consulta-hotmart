@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paleta de Cores - UIkit Elegante</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1E1E1E;
+            color: #FFFFFF;
+            line-height: 1.6;
+            font-weight: 400;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 32px;
+            background: #2A2A2A;
+            border-radius: 16px;
+            border: 1px solid #3A3A3A;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            color: #FFFFFF;
+            font-size: 2.8em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: #AAAAAA;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .color-card {
+            background: #2A2A2A;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #3A3A3A;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #FFFFFF;
+        }
+
+        .color-info h3 {
+            color: #4A9EFF;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .color-info p {
+            color: #AAAAAA;
+            font-size: 0.9em;
+        }
+
+        .usage-examples {
+            background: #2A2A2A;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #3A3A3A;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .usage-examples h2 {
+            color: #FFFFFF;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .example-item {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #2F2F2F;
+            border-radius: 8px;
+            border: 1px solid #3A3A3A;
+        }
+
+        .example-label {
+            color: #4A9EFF;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9em;
+        }
+
+        .example-text {
+            color: #FFFFFF;
+        }
+
+        .example-secondary {
+            color: #AAAAAA;
+        }
+
+        .button-example {
+            background: #4A9EFF;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 8px 8px 8px 0;
+            transition: background-color 0.2s ease;
+        }
+
+        .button-example:hover {
+            background: #3A8EFF;
+        }
+
+        .button-success {
+            background: #51CF66;
+        }
+
+        .button-success:hover {
+            background: #40C057;
+        }
+
+        .button-error {
+            background: #FF6B6B;
+        }
+
+        .button-error:hover {
+            background: #FF5252;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 4px;
+        }
+
+        .status-ativo {
+            background: #51CF66;
+            color: #FFFFFF;
+        }
+
+        .status-cancelado {
+            background: #FF6B6B;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Paleta de Cores UIkit</h1>
+            <p>Design elegante, clean e moderno para o sistema de pesquisa Hotmart</p>
+        </div>
+
+        <div class="color-grid">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #1E1E1E;">#1E1E1E</div>
+                <div class="color-info">
+                    <h3>Fundo Principal</h3>
+                    <p>Cinza grafite bem escuro - usado como background principal da aplicação</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #2A2A2A;">#2A2A2A</div>
+                <div class="color-info">
+                    <h3>Cards / Blocos</h3>
+                    <p>Cinza médio-escuro - usado para containers, cards e seções</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #2F2F2F;">#2F2F2F</div>
+                <div class="color-info">
+                    <h3>Cards Secundários</h3>
+                    <p>Cinza médio - usado para elementos internos e hover states</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #FFFFFF; color: #1E1E1E;">#FFFFFF</div>
+                <div class="color-info">
+                    <h3>Texto Principal</h3>
+                    <p>Branco puro - usado para títulos e texto principal</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #AAAAAA; color: #1E1E1E;">#AAAAAA</div>
+                <div class="color-info">
+                    <h3>Texto Secundário</h3>
+                    <p>Cinza claro - usado para labels, descrições e texto secundário</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #3A3A3A;">#3A3A3A</div>
+                <div class="color-info">
+                    <h3>Bordas / Divisores</h3>
+                    <p>Cinza médio - usado para bordas sutis e divisores</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #4A9EFF;">#4A9EFF</div>
+                <div class="color-info">
+                    <h3>Azul Primário</h3>
+                    <p>Azul moderno - usado para links, botões e elementos interativos</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #51CF66;">#51CF66</div>
+                <div class="color-info">
+                    <h3>Verde Sucesso</h3>
+                    <p>Verde suave - usado para status ativo e ações positivas</p>
+                </div>
+            </div>
+
+            <div class="color-card">
+                <div class="color-swatch" style="background: #FF6B6B;">#FF6B6B</div>
+                <div class="color-info">
+                    <h3>Vermelho Erro</h3>
+                    <p>Vermelho suave - usado para status cancelado e erros</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="usage-examples">
+            <h2>📋 Exemplos de Uso</h2>
+            
+            <div class="example-item">
+                <div class="example-label">Títulos e Headers</div>
+                <div class="example-text">Texto principal em branco (#FFFFFF) com peso 600</div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Labels e Descrições</div>
+                <div class="example-secondary">Texto secundário em cinza claro (#AAAAAA) para informações complementares</div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Botões e Ações</div>
+                <button class="button-example">Botão Primário</button>
+                <button class="button-example button-success">Botão Sucesso</button>
+                <button class="button-example button-error">Botão Erro</button>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Status Badges</div>
+                <span class="status-badge status-ativo">Ativo</span>
+                <span class="status-badge status-cancelado">Cancelado</span>
+            </div>
+
+            <div class="example-item">
+                <div class="example-label">Cards e Containers</div>
+                <div style="background: #2A2A2A; padding: 16px; border-radius: 8px; border: 1px solid #3A3A3A;">
+                    <div style="color: #4A9EFF; font-weight: 600; margin-bottom: 8px;">Exemplo de Card</div>
+                    <div style="color: #FFFFFF;">Conteúdo do card com texto principal</div>
+                    <div style="color: #AAAAAA; font-size: 0.9em; margin-top: 8px;">Informação secundária</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
