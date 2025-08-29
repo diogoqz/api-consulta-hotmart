@@ -12,9 +12,12 @@
     "server": "node server.js",
     "server:dev": "nodemon server.js",
     "db:process": "node csv-to-sqlite.js",
+    "db:process-cakto": "node cakto-processor.js",
     "db:search": "node -e \"const HotmartCSVProcessor = require('./csv-to-sqlite.js'); const processor = new HotmartCSVProcessor(); processor.search(process.argv[1] || 'test').then(console.log).catch(console.error)\"",
     "db:stats": "node -e \"const processor = require('./csv-to-sqlite.js'); processor.process().then(stats => console.log('📊', stats)).catch(console.error)\"",
-    "setup": "npm run db:process && npm run server"
+    "setup": "npm run db:process && npm run server",
+    "init-db": "node init-db.js",
+    "postinstall": "node init-db.js"
   },
   "dependencies": {
     "vue": "^3.3.4",

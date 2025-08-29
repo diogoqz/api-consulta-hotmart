@@ -54,6 +54,45 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Função para inicializar banco de dados
+async function initializeDatabase() {
+    try {
+        console.log('🔍 Verificando banco de dados...');
+        
+        // Tentar obter estatísticas para verificar se as tabelas existem
+        const testProcessor = new HotmartCSVProcessor();
+        await testProcessor.getStatistics();
+        console.log('✅ Banco de dados já inicializado');
+        
+    } catch (error) {
+        if (error.code === 'SQLITE_ERROR' && error.message.includes('no such table')) {
+            console.log('⚠️  Tabelas não encontradas, inicializando banco...');
+            
+            try {
+                // Inicializar Hotmart
+                const hotmartProcessor = new HotmartCSVProcessor();
+                await hotmartProcessor.initDatabase();
+                await hotmartProcessor.createTables();
+                console.log('✅ Tabelas Hotmart criadas');
+                
+                // Inicializar Cakto
+                const caktoProcessor = new CaktoProcessor();
+                await caktoProcessor.initDatabase();
+                await caktoProcessor.createTable();
+                await caktoProcessor.createIndexes();
+                console.log('✅ Tabelas Cakto criadas');
+                
+                console.log('🎉 Banco de dados inicializado com sucesso');
+                
+            } catch (initError) {
+                console.error('❌ Erro ao inicializar banco:', initError.message);
+            }
+        } else {
+            console.error('❌ Erro ao verificar banco:', error.message);
+        }
+    }
+}
+
 // Instância do processador
 const processor = new HotmartCSVProcessor();
 
@@ -464,10 +503,13 @@ app.use('*', (req, res) => {
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
+  
+  // Inicializar banco de dados
+  await initializeDatabase();
 });
 
 module.exports = app;
