@@ -75,10 +75,10 @@ jspm_packages/
 # TernJS port file
 .tern-port
 
-# Database files
-*.db
+# Database files (except production database)
 *.sqlite
 *.sqlite3
+# Allow hotmart-data.db for production
 
 # CSV files (except templates)
 *.csv
