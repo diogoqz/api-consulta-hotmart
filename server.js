@@ -171,6 +171,42 @@ app.get('/api/stats', async (req, res) => {
 });
 
 /**
+ * Rota para upload de banco de dados
+ */
+app.post('/api/upload-database', upload.single('database'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: 'Nenhum arquivo de banco enviado'
+      });
+    }
+
+    console.log('🗄️ Recebendo banco de dados:', req.file.originalname);
+    
+    // Copiar o banco recebido para o diretório raiz
+    const dbPath = './hotmart-data.db';
+    fs.copyFileSync(req.file.path, dbPath);
+    
+    console.log('✅ Banco de dados copiado com sucesso');
+    
+    res.json({
+      success: true,
+      message: 'Banco de dados atualizado com sucesso',
+      file: req.file.originalname,
+      size: req.file.size
+    });
+    
+  } catch (error) {
+    console.error('❌ Erro no upload do banco:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
  * Rota para upload de CSV
  */
 app.post('/api/upload-csv', upload.single('csv'), async (req, res) => {
