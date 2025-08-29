@@ -581,7 +581,7 @@
                     // Processar CSV
                     this.showStatus('processing', 'Processando', `Convertendo CSV ${platform} para banco de dados...`);
                     
-                    const processEndpoint = platform === 'cakto' ? '/api/process-cakto' : '/api/process';
+                    const processEndpoint = platform === 'cakto' ? '/process-cakto' : '/process';
                     const processResponse = await fetch(`${this.apiBase}${processEndpoint}`, {
                         method: 'POST'
                     });
