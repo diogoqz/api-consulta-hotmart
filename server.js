@@ -522,6 +522,7 @@ app.get('/api/search/grouped', async (req, res) => {
             status: record.status_venda,
             valor: record.valor_pago,
             data_venda: record.data_venda,
+            data_pagamento: record.data_pagamento,
             metodo_pagamento: record.metodo_pagamento,
             plataforma: 'cakto'
           });
@@ -668,7 +669,7 @@ app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
-  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto e valor por transação - ${new Date().toISOString()}`);
+  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto, valor por transação e data do pagamento - ${new Date().toISOString()}`);
   
   // Inicializar banco de dados
   await initializeDatabase();

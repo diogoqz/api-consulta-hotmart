@@ -752,6 +752,11 @@
                                                 R$ ${(transaction.valor || 0).toFixed(2)}
                                             </span>
                                         </div>
+                                        <div><strong>Data do Pagamento:</strong> 
+                                            <span style="color: #FF9800; font-weight: bold;">
+                                                ${transaction.data_pagamento || transaction.adesao || 'N/A'}
+                                            </span>
+                                        </div>
                                         <div><strong>Adesão:</strong> ${transaction.adesao || 'N/A'}</div>
                                         <div><strong>Pagamento:</strong> ${transaction.formaPagamento || 'N/A'}</div>
                                     </div>
