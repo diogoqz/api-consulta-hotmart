@@ -173,6 +173,32 @@ app.get('/api/stats', async (req, res) => {
 });
 
 /**
+ * Rota para obter data da transação mais recente
+ */
+app.get('/api/latest-transaction', async (req, res) => {
+  try {
+    const hotmartLatest = await processor.getLatestTransaction();
+    const caktoProcessor = new CaktoProcessor();
+    const caktoLatest = await caktoProcessor.getLatestTransaction();
+    
+    res.json({
+      success: true,
+      data: {
+        hotmart: hotmartLatest,
+        cakto: caktoLatest
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('❌ Erro ao obter transação mais recente:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
  * Rota para upload de banco de dados
  */
 app.post('/api/upload-database', upload.single('database'), async (req, res) => {
@@ -669,7 +695,7 @@ app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
-  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto, valor por transação, data do pagamento e layout otimizado - ${new Date().toISOString()}`);
+  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto, valor por transação, data do pagamento, layout otimizado e admin com datas - ${new Date().toISOString()}`);
   
   // Inicializar banco de dados
   await initializeDatabase();

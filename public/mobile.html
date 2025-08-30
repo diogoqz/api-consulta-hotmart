@@ -362,7 +362,6 @@
 </head>
 <body>
     <button class="mobile-logout" id="mobileLogoutBtn">🚪</button>
-    <button class="mobile-desktop" id="mobileDesktopBtn" style="position: fixed; top: 16px; left: 16px; background: #4A9EFF; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 0.8em; cursor: pointer; z-index: 1000;">💻</button>
     
     <div class="mobile-container">
         <div class="mobile-header">
@@ -476,10 +475,7 @@
                     this.logout();
                 });
 
-                // Event listener para voltar ao desktop
-                document.getElementById('mobileDesktopBtn').addEventListener('click', () => {
-                    window.location.href = '/';
-                });
+
 
                 // Prevenir zoom em input focus
                 this.searchInput.addEventListener('focus', () => {

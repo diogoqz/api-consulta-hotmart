@@ -302,6 +302,33 @@ class HotmartCSVProcessor {
   }
 
   /**
+   * Obtém a data da transação mais recente
+   */
+  async getLatestTransaction() {
+    if (!this.db) {
+      await this.initDatabase();
+    }
+
+    const query = `
+      SELECT 
+        MAX(adesao) as latest_date,
+        COUNT(*) as total_transactions
+      FROM vendas
+      WHERE adesao IS NOT NULL AND adesao != ''
+    `;
+
+    return new Promise((resolve, reject) => {
+      this.db.get(query, (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  }
+
+  /**
    * Processa o CSV e atualiza o banco
    */
   async process() {

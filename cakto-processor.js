@@ -365,6 +365,33 @@ class CaktoProcessor {
     });
   }
 
+  async getLatestTransaction() {
+    if (!this.db) {
+      await this.initDatabase();
+    }
+
+    const query = `
+      SELECT 
+        MAX(data_venda) as latest_date,
+        COUNT(*) as total_transactions
+      FROM vendas_cakto
+      WHERE data_venda IS NOT NULL AND data_venda != ''
+    `;
+
+    return new Promise((resolve, reject) => {
+      this.db.get(query, (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({
+            latest_date: row.latest_date || null,
+            total_transactions: row.total_transactions || 0
+          });
+        }
+      });
+    });
+  }
+
   async search(query, limit = 50) {
     if (!this.db) {
       await this.initDatabase();
