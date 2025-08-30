@@ -578,6 +578,7 @@
 
                 // Event listener para o checkbox
                 this.showLowScoresCheckbox.addEventListener('change', () => {
+                    console.log('🔘 Checkbox alterado:', this.showLowScoresCheckbox.checked);
                     const query = this.searchInput.value.trim();
                     if (query.length >= 2) {
                         this.search(query);
@@ -600,9 +601,9 @@
 
             updateStats(stats) {
                 console.log('📊 Atualizando estatísticas:', stats);
-                this.stats.totalRecords.textContent = stats.total?.toLocaleString() || '0';
-                this.stats.uniqueClients.textContent = stats.clientes_unicos?.toLocaleString() || '0';
-                this.stats.activeSubscriptions.textContent = stats.ativos?.toLocaleString() || '0';
+                this.stats.totalRecords.textContent = stats.total?.total?.toLocaleString() || '0';
+                this.stats.uniqueClients.textContent = stats.total?.clientes_unicos?.toLocaleString() || '0';
+                this.stats.activeSubscriptions.textContent = stats.total?.ativos?.toLocaleString() || '0';
                 
                 // Estatísticas por plataforma
                 const hotmartStats = document.getElementById('hotmartStats');
@@ -619,7 +620,8 @@
                 
                 try {
                     const minScore = this.showLowScoresCheckbox.checked ? 1 : 11;
-                const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=${minScore}`);
+                    console.log('🔍 Pesquisando com minScore:', minScore);
+                    const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=${minScore}`);
                     const data = await response.json();
                     
                     if (data.success) {
