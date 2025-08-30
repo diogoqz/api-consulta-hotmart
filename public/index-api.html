@@ -523,6 +523,7 @@
             }
 
             updateStats(stats) {
+                console.log('📊 Atualizando estatísticas:', stats);
                 this.stats.totalRecords.textContent = stats.total?.toLocaleString() || '0';
                 this.stats.uniqueClients.textContent = stats.clientes_unicos?.toLocaleString() || '0';
                 this.stats.activeSubscriptions.textContent = stats.ativos?.toLocaleString() || '0';
