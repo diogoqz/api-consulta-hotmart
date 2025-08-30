@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🔍 Consulta Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1E1E1E;
+            color: #FFFFFF;
+            line-height: 1.4;
+            font-weight: 400;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mobile-container {
+            padding: 16px;
+            max-width: 100%;
+        }
+
+        .mobile-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px 16px;
+            background: #2A2A2A;
+            border-radius: 12px;
+            border: 1px solid #3A3A3A;
+        }
+
+        .mobile-header h1 {
+            color: #FFFFFF;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .mobile-header p {
+            color: #AAAAAA;
+            font-size: 0.9em;
+        }
+
+        .mobile-search {
+            background: #2A2A2A;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #3A3A3A;
+        }
+
+        .mobile-search-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.1em;
+            background: #1E1E1E;
+            border: 2px solid #3A3A3A;
+            border-radius: 12px;
+            color: #FFFFFF;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .mobile-search-input:focus {
+            border-color: #4A9EFF;
+            box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+        }
+
+        .mobile-search-input::placeholder {
+            color: #AAAAAA;
+        }
+
+        .mobile-options {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .mobile-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #AAAAAA;
+        }
+
+        .mobile-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4A9EFF;
+        }
+
+        .mobile-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #3A3A3A;
+            margin-bottom: 20px;
+            font-size: 0.85em;
+        }
+
+        .mobile-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #AAAAAA;
+        }
+
+        .mobile-stat-number {
+            color: #4A9EFF;
+            font-weight: 600;
+        }
+
+        .mobile-platform-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .mobile-platform-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8em;
+        }
+
+        .mobile-platform-stat.hotmart {
+            color: #E91E63;
+        }
+
+        .mobile-platform-stat.cakto {
+            color: #FF9800;
+        }
+
+        .mobile-results {
+            background: #2A2A2A;
+            border-radius: 12px;
+            border: 1px solid #3A3A3A;
+            overflow: hidden;
+        }
+
+        .mobile-result-item {
+            background: #2F2F2F;
+            margin: 12px;
+            border-radius: 10px;
+            border: 1px solid #3A3A3A;
+            overflow: hidden;
+        }
+
+        .mobile-result-header {
+            background: #2A2A2A;
+            color: #FFFFFF;
+            padding: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border-bottom: 1px solid #3A3A3A;
+        }
+
+        .mobile-result-header:active {
+            background: #3A3A3A;
+        }
+
+        .mobile-result-content {
+            padding: 16px;
+            display: none;
+            background: #2F2F2F;
+        }
+
+        .mobile-result-content.active {
+            display: block;
+        }
+
+        .mobile-client-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .mobile-info-group {
+            background: #2A2A2A;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #3A3A3A;
+        }
+
+        .mobile-info-label {
+            color: #4A9EFF;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+
+        .mobile-info-value {
+            color: #FFFFFF;
+            font-size: 0.9em;
+            word-break: break-word;
+        }
+
+        .mobile-copy-btn {
+            background: #4A9EFF;
+            color: #FFFFFF;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .mobile-history-section {
+            border-top: 1px solid #3A3A3A;
+            padding-top: 12px;
+        }
+
+        .mobile-history-title {
+            color: #4A9EFF;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .mobile-history-item {
+            background: #2A2A2A;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #3A3A3A;
+            font-size: 0.8em;
+        }
+
+        .mobile-history-grid {
+            display: grid;
+            gap: 4px;
+        }
+
+        .mobile-history-grid div {
+            color: #AAAAAA;
+        }
+
+        .mobile-history-grid strong {
+            color: #FFFFFF;
+        }
+
+        .mobile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .mobile-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        .mobile-badge.status-ativo {
+            background: #4CAF50;
+            color: #FFFFFF;
+        }
+
+        .mobile-badge.status-cancelado {
+            background: #E91E63;
+            color: #FFFFFF;
+        }
+
+        .mobile-badge.platform-hotmart {
+            background: #E91E63;
+            color: #FFFFFF;
+        }
+
+        .mobile-badge.platform-cakto {
+            background: #FF9800;
+            color: #FFFFFF;
+        }
+
+        .mobile-badge.score {
+            background: #9C27B0;
+            color: #FFFFFF;
+        }
+
+        .mobile-badge.match {
+            background: #607D8B;
+            color: #FFFFFF;
+        }
+
+        .mobile-loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #AAAAAA;
+            font-size: 1.1em;
+        }
+
+        .mobile-error {
+            text-align: center;
+            padding: 40px 20px;
+            color: #E91E63;
+            font-size: 1em;
+        }
+
+        .mobile-toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-toggle-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .mobile-logout {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: #E91E63;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        @media (max-width: 480px) {
+            .mobile-container {
+                padding: 12px;
+            }
+            
+            .mobile-header {
+                padding: 16px 12px;
+            }
+            
+            .mobile-search {
+                padding: 16px;
+            }
+            
+            .mobile-stats {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+            
+            .mobile-platform-stats {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-logout" id="mobileLogoutBtn">🚪</button>
+    <button class="mobile-desktop" id="mobileDesktopBtn" style="position: fixed; top: 16px; left: 16px; background: #4A9EFF; color: white; border: none; padding: 8px 12px; border-radius: 20px; font-size: 0.8em; cursor: pointer; z-index: 1000;">💻</button>
+    
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <h1>🔍 Consulta Mobile</h1>
+            <p>Sistema de pesquisa otimizado para celular</p>
+        </div>
+
+        <div class="mobile-search">
+            <input 
+                type="text" 
+                class="mobile-search-input" 
+                placeholder="Digite nome, email ou telefone..."
+                id="mobileSearchInput"
+            >
+            
+            <div class="mobile-options">
+                <label class="mobile-checkbox">
+                    <input type="checkbox" id="mobileShowLowScores">
+                    Mostrar resultados fracos (≤ 10)
+                </label>
+            </div>
+        </div>
+
+        <div class="mobile-stats" id="mobileStats">
+            <div class="mobile-stat">
+                <span>📊</span>
+                <span>Total: <span class="mobile-stat-number" id="mobileTotalRecords">-</span></span>
+            </div>
+            <div class="mobile-stat">
+                <span>👥</span>
+                <span>Clientes: <span class="mobile-stat-number" id="mobileUniqueClients">-</span></span>
+            </div>
+            <div class="mobile-stat">
+                <span>✅</span>
+                <span>Ativos: <span class="mobile-stat-number" id="mobileActiveSubscriptions">-</span></span>
+            </div>
+            <div class="mobile-platform-stats">
+                <div class="mobile-platform-stat hotmart">
+                    <span>♨️</span>
+                    <span id="mobileHotmartStats">-</span>
+                </div>
+                <div class="mobile-platform-stat cakto">
+                    <span>🌵</span>
+                    <span id="mobileCaktoStats">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-results" id="mobileResultsContainer">
+            <div class="mobile-loading" id="mobileLoading" style="display: none;">
+                🔄 Carregando...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MobileClientSearch {
+            constructor() {
+                this.apiBase = '/api';
+                this.searchInput = document.getElementById('mobileSearchInput');
+                this.resultsContainer = document.getElementById('mobileResultsContainer');
+                this.loading = document.getElementById('mobileLoading');
+                this.showLowScoresCheckbox = document.getElementById('mobileShowLowScores');
+                this.logoutBtn = document.getElementById('mobileLogoutBtn');
+                
+                this.stats = {
+                    totalRecords: document.getElementById('mobileTotalRecords'),
+                    uniqueClients: document.getElementById('mobileUniqueClients'),
+                    activeSubscriptions: document.getElementById('mobileActiveSubscriptions')
+                };
+                
+                this.setupEventListeners();
+                this.loadStats();
+            }
+
+            setupEventListeners() {
+                let searchTimeout;
+                
+                this.searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    const query = e.target.value.trim();
+                    
+                    if (query.length >= 2) {
+                        searchTimeout = setTimeout(() => {
+                            this.search(query);
+                        }, 500); // Delay maior para mobile
+                    } else {
+                        this.clearResults();
+                    }
+                });
+
+                this.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = e.target.value.trim();
+                        if (query.length >= 2) {
+                            this.search(query);
+                        }
+                    }
+                });
+
+                // Event listener para o checkbox
+                this.showLowScoresCheckbox.addEventListener('change', () => {
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 2) {
+                        this.search(query);
+                    }
+                });
+
+                // Event listener para logout
+                this.logoutBtn.addEventListener('click', () => {
+                    this.logout();
+                });
+
+                // Event listener para voltar ao desktop
+                document.getElementById('mobileDesktopBtn').addEventListener('click', () => {
+                    window.location.href = '/';
+                });
+
+                // Prevenir zoom em input focus
+                this.searchInput.addEventListener('focus', () => {
+                    document.body.style.fontSize = '16px';
+                });
+            }
+
+            async logout() {
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/login';
+                    }
+                } catch (error) {
+                    console.error('Erro no logout:', error);
+                    window.location.href = '/login';
+                }
+            }
+
+            async loadStats() {
+                try {
+                    const response = await fetch(`${this.apiBase}/stats`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.updateStats(data.data);
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar estatísticas:', error);
+                }
+            }
+
+            updateStats(stats) {
+                this.stats.totalRecords.textContent = stats.total?.total?.toLocaleString() || '0';
+                this.stats.uniqueClients.textContent = stats.total?.clientes_unicos?.toLocaleString() || '0';
+                this.stats.activeSubscriptions.textContent = stats.total?.ativos?.toLocaleString() || '0';
+                
+                // Estatísticas por plataforma
+                const hotmartStats = document.getElementById('mobileHotmartStats');
+                const caktoStats = document.getElementById('mobileCaktoStats');
+                
+                if (hotmartStats && caktoStats) {
+                    hotmartStats.textContent = `${stats.hotmart?.total || 0}`;
+                    caktoStats.textContent = `${stats.cakto?.total || 0}`;
+                }
+            }
+
+            async search(query) {
+                this.showLoading();
+                
+                try {
+                    const minScore = this.showLowScoresCheckbox.checked ? 1 : 11;
+                    const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=30&minScore=${minScore}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.displayResults(data.results, query);
+                    } else {
+                        this.showError(data.error || 'Erro na pesquisa');
+                    }
+                } catch (error) {
+                    console.error('Erro na pesquisa:', error);
+                    this.showError('Erro de conexão com o servidor');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            displayResults(results, query) {
+                this.resultsContainer.innerHTML = '';
+                
+                if (results.length === 0) {
+                    this.resultsContainer.innerHTML = `
+                        <div class="mobile-loading">
+                            🔍 Nenhum resultado encontrado para "${query}"
+                        </div>
+                    `;
+                    return;
+                }
+
+                results.forEach((client, index) => {
+                    const resultItem = this.createResultItem(client, index);
+                    this.resultsContainer.appendChild(resultItem);
+                });
+            }
+
+            createResultItem(client, index) {
+                const item = document.createElement('div');
+                item.className = 'mobile-result-item';
+                
+                const relevanceScore = Math.round(client.relevanceScore || 100);
+                const statusClass = client.isActive ? 'status-ativo' : 'status-cancelado';
+                const statusText = client.isActive ? 'ATIVO' : 'CANCELADO';
+                
+                item.innerHTML = `
+                    <div class="mobile-result-header" onclick="toggleMobileResult(${index})">
+                        <div>
+                            <strong>${client.name}</strong>
+                            <div class="mobile-badges">
+                                <span class="mobile-badge ${statusClass}">${statusText}</span>
+                                <span class="mobile-badge platform-${client.plataforma}">${client.plataforma === 'cakto' ? '🌵 Cakto' : '♨️ Hotmart'}</span>
+                                <span class="mobile-badge score">Score: ${relevanceScore}</span>
+                                <span class="mobile-badge match">🎯 ${client.matchType || 'Parcial'}</span>
+                            </div>
+                        </div>
+                        <div class="mobile-toggle-icon">▼</div>
+                    </div>
+                    <div class="mobile-result-content" id="mobile-content-${index}">
+                        <div class="mobile-client-info">
+                            <div class="mobile-info-group">
+                                <div class="mobile-info-label">📧 Email</div>
+                                <div class="mobile-info-value">
+                                    ${client.email || 'Não informado'}
+                                    ${client.email ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.email}')">Copiar</button>` : ''}
+                                </div>
+                            </div>
+                            <div class="mobile-info-group">
+                                <div class="mobile-info-label">📱 Telefone</div>
+                                <div class="mobile-info-value">
+                                    ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}
+                                    ${client.phone ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar</button>` : ''}
+                                </div>
+                            </div>
+                            <div class="mobile-info-group">
+                                <div class="mobile-info-label">📍 Localização</div>
+                                <div class="mobile-info-value">
+                                    ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
+                                </div>
+                            </div>
+                            <div class="mobile-info-group">
+                                <div class="mobile-info-label">📊 Resumo</div>
+                                <div class="mobile-info-value">
+                                    <strong>Transações: ${client.totalTransactions || 0}</strong><br>
+                                    Ativas: ${client.activeSubscriptions || 0}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mobile-history-section">
+                            <div class="mobile-history-title">📋 Histórico (${client.history.length})</div>
+                            ${client.history.map(transaction => `
+                                <div class="mobile-history-item">
+                                    <div class="mobile-history-grid">
+                                        <div><strong>Produto:</strong> ${transaction.produto || 'N/A'}</div>
+                                        <div><strong>Status:</strong> ${transaction.status || 'N/A'}</div>
+                                        <div><strong>Valor:</strong> R$ ${(transaction.valor || 0).toFixed(2)}</div>
+                                        <div><strong>Data:</strong> ${transaction.data_venda || transaction.adesao || 'N/A'}</div>
+                                        <div><strong>Plataforma:</strong> ${transaction.plataforma}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                return item;
+            }
+
+            formatPhone(ddd, phone) {
+                if (!ddd || !phone) return null;
+                return `(${ddd}) ${phone}`;
+            }
+
+            showLoading() {
+                this.loading.style.display = 'block';
+            }
+
+            hideLoading() {
+                this.loading.style.display = 'none';
+            }
+
+            showError(message) {
+                this.resultsContainer.innerHTML = `
+                    <div class="mobile-error">
+                        ❌ ${message}
+                    </div>
+                `;
+            }
+
+            clearResults() {
+                this.resultsContainer.innerHTML = '';
+            }
+        }
+
+        // Função global para toggle dos resultados
+        function toggleMobileResult(index) {
+            const content = document.getElementById(`mobile-content-${index}`);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.mobile-toggle-icon');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.classList.remove('rotated');
+            } else {
+                content.classList.add('active');
+                icon.classList.add('rotated');
+            }
+        }
+
+        // Função global para copiar
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Feedback visual simples
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓';
+                btn.style.background = '#4CAF50';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#4A9EFF';
+                }, 1000);
+            });
+        }
+
+        // Inicializar sistema mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            new MobileClientSearch();
+        });
+    </script>
+</body>
+</html>

@@ -571,6 +571,13 @@ app.get('/', requireAuth, (req, res) => {
 });
 
 /**
+ * Rota mobile - página otimizada para celular (protegida)
+ */
+app.get('/mobile', requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'mobile.html'));
+});
+
+/**
  * Rota para página de administração
  */
 app.get('/admin', (req, res) => {
