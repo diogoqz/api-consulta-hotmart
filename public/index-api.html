@@ -497,7 +497,7 @@
             >
             <div class="search-options">
                 <label class="checkbox-container">
-                    <input type="checkbox" id="showLowScores" checked>
+                    <input type="checkbox" id="showLowScores">
                     <span class="checkmark"></span>
                     Mostrar resultados com score baixo (≤ 10)
                 </label>
@@ -646,7 +646,7 @@
                 
                 try {
                     const minScore = this.showLowScoresCheckbox.checked ? 1 : 11;
-                    console.log('🔍 Pesquisando com minScore:', minScore);
+                    console.log('🔍 Pesquisando com minScore:', minScore, 'Checkbox:', this.showLowScoresCheckbox.checked);
                     const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=${minScore}`);
                     const data = await response.json();
                     
