@@ -704,35 +704,41 @@
                         <div class="toggle-icon">▼</div>
                     </div>
                     <div class="result-content" id="content-${index}">
-                        <div class="client-info">
-                            <div class="info-group">
-                                <div class="info-label">📧 Email</div>
-                                <div class="info-value">
-                                    ${client.email || 'Não informado'}
-                                    ${client.email ? `<button class="copy-btn" onclick="copyToClipboard('${client.email}')">Copiar</button>` : ''}
+                                                    <div class="client-info">
+                                <div class="info-group">
+                                    <div class="info-label">📧 Email</div>
+                                    <div class="info-value">
+                                        ${client.email || 'Não informado'}
+                                        ${client.email ? `<button class="copy-btn" onclick="copyToClipboard('${client.email}')">Copiar</button>` : ''}
+                                    </div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">📱 Telefone</div>
+                                    <div class="info-value">
+                                        ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}
+                                        ${client.phone ? `<button class="copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar</button>` : ''}
+                                    </div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">📍 Localização</div>
+                                    <div class="info-value">
+                                        ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
+                                    </div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">💰 Valor Total Pago</div>
+                                    <div class="info-value">
+                                        <strong>R$ ${(client.totalValue || 0).toFixed(2)}</strong>
+                                    </div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">📊 Resumo</div>
+                                    <div class="info-value">
+                                        <strong>Transações: ${client.totalTransactions || 0}</strong><br>
+                                        Ativas: ${client.activeSubscriptions || 0}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="info-group">
-                                <div class="info-label">📱 Telefone</div>
-                                <div class="info-value">
-                                    ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}
-                                    ${client.phone ? `<button class="copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar</button>` : ''}
-                                </div>
-                            </div>
-                            <div class="info-group">
-                                <div class="info-label">📍 Localização</div>
-                                <div class="info-value">
-                                    ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
-                                </div>
-                            </div>
-                            <div class="info-group">
-                                <div class="info-label">📊 Resumo</div>
-                                <div class="info-value">
-                                    <strong>Transações: ${client.totalTransactions || 0}</strong><br>
-                                    Ativas: ${client.activeSubscriptions || 0}
-                                </div>
-                            </div>
-                        </div>
                         
                         <div class="history-section">
                             <div class="history-title">📋 Histórico de Transações (${client.history.length})</div>
