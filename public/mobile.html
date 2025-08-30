@@ -587,8 +587,8 @@
                             <div class="mobile-badges">
                                 <span class="mobile-badge ${statusClass}">${statusText}</span>
                                 <span class="mobile-badge platform-${client.plataforma}">${client.plataforma === 'cakto' ? '🌵 Cakto' : '♨️ Hotmart'}</span>
-                                <span class="mobile-badge score">Score: ${relevanceScore}</span>
-                                <span class="mobile-badge match">🎯 ${client.matchType || 'Parcial'}</span>
+                                <span class="mobile-badge score" style="font-size: 0.7em; color: #AAAAAA;">Score: ${relevanceScore}</span>
+                                <span class="mobile-badge match" style="font-size: 0.7em; color: #AAAAAA;">🎯 ${client.matchType || 'Parcial'}</span>
                             </div>
                         </div>
                         <div class="mobile-toggle-icon">▼</div>
@@ -596,31 +596,18 @@
                     <div class="mobile-result-content" id="mobile-content-${index}">
                         <div class="mobile-client-info">
                             <div class="mobile-info-group">
-                                <div class="mobile-info-label">📧 Email</div>
+                                <div class="mobile-info-label">📊 Informações do Cliente</div>
                                 <div class="mobile-info-value">
-                                    ${client.email || 'Não informado'}
-                                    ${client.email ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.email}')">Copiar</button>` : ''}
-                                </div>
-                            </div>
-                            <div class="mobile-info-group">
-                                <div class="mobile-info-label">📱 Telefone</div>
-                                <div class="mobile-info-value">
-                                    ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}
-                                    ${client.phone ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar</button>` : ''}
-                                </div>
-                            </div>
-                            <div class="mobile-info-group">
-                                <div class="mobile-info-label">📍 Localização</div>
-                                <div class="mobile-info-value">
-                                    ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
-                                </div>
-                            </div>
-
-                            <div class="mobile-info-group">
-                                <div class="mobile-info-label">📊 Resumo</div>
-                                <div class="mobile-info-value">
-                                    <strong>Transações: ${client.totalTransactions || 0}</strong><br>
-                                    Ativas: ${client.activeSubscriptions || 0}
+                                    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px;">
+                                        <div><strong>📧 Email:</strong> ${client.email || 'Não informado'}</div>
+                                        <div><strong>📱 Telefone:</strong> ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}</div>
+                                        <div><strong>📍 Localização:</strong> ${client.city || 'Não informado'}, ${client.state || 'Não informado'}</div>
+                                        <div><strong>📊 Resumo:</strong> Transações: ${client.totalTransactions || 0} | Ativas: ${client.activeSubscriptions || 0}</div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                        ${client.email ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.email}')">Copiar Email</button>` : ''}
+                                        ${client.phone ? `<button class="mobile-copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar Telefone</button>` : ''}
+                                    </div>
                                 </div>
                             </div>
                         </div>

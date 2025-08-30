@@ -698,39 +698,26 @@
                             <strong>${client.name}</strong>
                             <span class="status-badge ${statusClass}">${statusText}</span>
                             <span class="platform-badge ${client.plataforma === 'cakto' ? 'cakto' : 'hotmart'}">${client.plataforma === 'cakto' ? '🌵 Cakto' : '♨️ Hotmart'}</span>
-                            <span class="relevance-score">Score: ${relevanceScore}</span>
-                            <span class="match-type">🎯 ${client.matchType || 'Correspondência parcial'}</span>
+                            <span class="relevance-score" style="font-size: 0.8em; color: #AAAAAA;">Score: ${relevanceScore}</span>
+                            <span class="match-type" style="font-size: 0.8em; color: #AAAAAA;">🎯 ${client.matchType || 'Correspondência parcial'}</span>
                         </div>
                         <div class="toggle-icon">▼</div>
                     </div>
                     <div class="result-content" id="content-${index}">
                                                     <div class="client-info">
                                 <div class="info-group">
-                                    <div class="info-label">📧 Email</div>
+                                    <div class="info-label">📊 Informações do Cliente</div>
                                     <div class="info-value">
-                                        ${client.email || 'Não informado'}
-                                        ${client.email ? `<button class="copy-btn" onclick="copyToClipboard('${client.email}')">Copiar</button>` : ''}
-                                    </div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">📱 Telefone</div>
-                                    <div class="info-value">
-                                        ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}
-                                        ${client.phone ? `<button class="copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar</button>` : ''}
-                                    </div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">📍 Localização</div>
-                                    <div class="info-value">
-                                        ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
-                                    </div>
-                                </div>
-
-                                <div class="info-group">
-                                    <div class="info-label">📊 Resumo</div>
-                                    <div class="info-value">
-                                        <strong>Transações: ${client.totalTransactions || 0}</strong><br>
-                                        Ativas: ${client.activeSubscriptions || 0}
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+                                            <div><strong>📧 Email:</strong> ${client.email || 'Não informado'}</div>
+                                            <div><strong>📱 Telefone:</strong> ${this.formatPhone(client.ddd, client.phone) || 'Não informado'}</div>
+                                            <div><strong>📍 Localização:</strong> ${client.city || 'Não informado'}, ${client.state || 'Não informado'}</div>
+                                            <div><strong>📊 Resumo:</strong> Transações: ${client.totalTransactions || 0} | Ativas: ${client.activeSubscriptions || 0}</div>
+                                        </div>
+                                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                            ${client.email ? `<button class="copy-btn" onclick="copyToClipboard('${client.email}')">Copiar Email</button>` : ''}
+                                            ${client.phone ? `<button class="copy-btn" onclick="copyToClipboard('${client.ddd}${client.phone}')">Copiar Telefone</button>` : ''}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
