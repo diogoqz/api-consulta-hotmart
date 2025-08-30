@@ -81,6 +81,66 @@
             color: #AAAAAA;
         }
 
+        .search-options {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9em;
+            color: #AAAAAA;
+            user-select: none;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: #2A2A2A;
+            border: 2px solid #3A3A3A;
+            border-radius: 4px;
+            margin-right: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container:hover .checkmark {
+            border-color: #4A9EFF;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #4A9EFF;
+            border-color: #4A9EFF;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
         .stats {
             display: flex;
             justify-content: space-between;
@@ -432,6 +492,13 @@
                 placeholder="Digite nome, email ou telefone para pesquisar..."
                 id="searchInput"
             >
+            <div class="search-options">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="showLowScores" checked>
+                    <span class="checkmark"></span>
+                    Mostrar resultados com score baixo (≤ 10)
+                </label>
+            </div>
         </div>
 
         <div class="stats" id="stats">
@@ -473,6 +540,7 @@
                 this.searchInput = document.getElementById('searchInput');
                 this.resultsContainer = document.getElementById('resultsContainer');
                 this.loading = document.getElementById('loading');
+                this.showLowScoresCheckbox = document.getElementById('showLowScores');
                 this.stats = {
                     totalRecords: document.getElementById('totalRecords'),
                     uniqueClients: document.getElementById('uniqueClients'),
@@ -505,6 +573,14 @@
                         if (query.length >= 2) {
                             this.search(query);
                         }
+                    }
+                });
+
+                // Event listener para o checkbox
+                this.showLowScoresCheckbox.addEventListener('change', () => {
+                    const query = this.searchInput.value.trim();
+                    if (query.length >= 2) {
+                        this.search(query);
                     }
                 });
             }
@@ -542,7 +618,8 @@
                 this.showLoading();
                 
                 try {
-                    const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=11`);
+                    const minScore = this.showLowScoresCheckbox.checked ? 1 : 11;
+                const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=${minScore}`);
                     const data = await response.json();
                     
                     if (data.success) {
