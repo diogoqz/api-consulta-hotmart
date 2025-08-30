@@ -610,7 +610,7 @@ app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
-  console.log(`🔐 Versão: Sistema com autenticação e checkbox corrigido - ${new Date().toISOString()}`);
+  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido e versão mobile - ${new Date().toISOString()}`);
   
   // Inicializar banco de dados
   await initializeDatabase();
