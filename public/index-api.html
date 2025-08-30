@@ -542,7 +542,7 @@
                 this.showLoading();
                 
                 try {
-                    const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=5`);
+                    const response = await fetch(`${this.apiBase}/search/grouped?q=${encodeURIComponent(query)}&maxResults=50&minScore=11`);
                     const data = await response.json();
                     
                     if (data.success) {

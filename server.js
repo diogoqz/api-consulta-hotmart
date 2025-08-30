@@ -328,7 +328,7 @@ app.post('/api/restart', async (req, res) => {
  */
 app.get('/api/search', async (req, res) => {
   try {
-    const { q, maxResults = 50, minScore = 5, groupByClient = true } = req.query;
+    const { q, maxResults = 50, minScore = 11, groupByClient = true } = req.query;
     
     if (!q || q.trim() === '') {
       return res.status(400).json({
@@ -367,7 +367,7 @@ app.get('/api/search', async (req, res) => {
  */
 app.get('/api/search/grouped', async (req, res) => {
   try {
-    const { q, maxResults = 50, minScore = 5 } = req.query;
+    const { q, maxResults = 50, minScore = 11 } = req.query;
     
     if (!q || q.trim() === '') {
       return res.status(400).json({
