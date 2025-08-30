@@ -725,12 +725,7 @@
                                         ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
                                     </div>
                                 </div>
-                                <div class="info-group">
-                                    <div class="info-label">💰 Valor Total Pago</div>
-                                    <div class="info-value">
-                                        <strong>R$ ${(client.totalValue || 0).toFixed(2)}</strong>
-                                    </div>
-                                </div>
+
                                 <div class="info-group">
                                     <div class="info-label">📊 Resumo</div>
                                     <div class="info-value">
@@ -750,6 +745,11 @@
                                         <div><strong>Status:</strong> 
                                             <span class="status-badge ${transaction.status?.toLowerCase().includes('ativo') ? 'status-ativo' : 'status-cancelado'}">
                                                 ${transaction.status || 'N/A'}
+                                            </span>
+                                        </div>
+                                        <div><strong>Valor da Transação:</strong> 
+                                            <span style="color: #4CAF50; font-weight: bold; font-size: 1.1em;">
+                                                R$ ${(transaction.valor || 0).toFixed(2)}
                                             </span>
                                         </div>
                                         <div><strong>Adesão:</strong> ${transaction.adesao || 'N/A'}</div>

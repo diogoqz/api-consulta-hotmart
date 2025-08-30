@@ -615,12 +615,7 @@
                                     ${client.city || 'Não informado'}, ${client.state || 'Não informado'}
                                 </div>
                             </div>
-                            <div class="mobile-info-group">
-                                <div class="mobile-info-label">💰 Valor Total Pago</div>
-                                <div class="mobile-info-value">
-                                    <strong>R$ ${(client.totalValue || 0).toFixed(2)}</strong>
-                                </div>
-                            </div>
+
                             <div class="mobile-info-group">
                                 <div class="mobile-info-label">📊 Resumo</div>
                                 <div class="mobile-info-value">
@@ -637,9 +632,15 @@
                                     <div class="mobile-history-grid">
                                         <div><strong>Produto:</strong> ${transaction.produto || 'N/A'}</div>
                                         <div><strong>Status:</strong> ${transaction.status || 'N/A'}</div>
-                                        <div><strong>Valor:</strong> R$ ${(transaction.valor || 0).toFixed(2)}</div>
+                                        <div><strong>Valor da Transação:</strong> 
+                                            <span style="color: #4CAF50; font-weight: bold;">
+                                                R$ ${(transaction.valor || 0).toFixed(2)}
+                                            </span>
+                                        </div>
                                         <div><strong>Data:</strong> ${transaction.data_venda || transaction.adesao || 'N/A'}</div>
                                         <div><strong>Plataforma:</strong> ${transaction.plataforma}</div>
+                                        ${transaction.plano ? `<div><strong>Plano:</strong> ${transaction.plano}</div>` : ''}
+                                        ${transaction.metodo_pagamento ? `<div><strong>Pagamento:</strong> ${transaction.metodo_pagamento}</div>` : ''}
                                     </div>
                                 </div>
                             `).join('')}

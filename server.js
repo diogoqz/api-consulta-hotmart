@@ -668,7 +668,7 @@ app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
-  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto e valor pago - ${new Date().toISOString()}`);
+  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile, prioridade Cakto e valor por transação - ${new Date().toISOString()}`);
   
   // Inicializar banco de dados
   await initializeDatabase();
