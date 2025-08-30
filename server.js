@@ -402,8 +402,50 @@ app.get('/api/search/grouped', async (req, res) => {
     
     console.log(`🔍 Resultados filtrados: ${results.length} de ${allResults.length} (minScore: ${minScore})`);
 
-    // Agrupar por cliente
+    // Agrupar por cliente com prioridade para Cakto
     const grouped = {};
+    const clientStatusMap = new Map(); // Mapa para rastrear status por cliente
+    
+    // Primeira passada: coletar todos os registros e determinar status prioritário
+    results.forEach(record => {
+      let key, name, email, phone, status, plataforma;
+      
+      if (record.plataforma === 'cakto') {
+        key = record.email_cliente || record.telefone_cliente || record.nome_cliente;
+        name = record.nome_cliente;
+        email = record.email_cliente;
+        phone = record.telefone_cliente;
+        status = record.status_venda;
+        plataforma = 'cakto';
+      } else {
+        key = record.email || `${record.ddd}${record.telefone}` || record.cliente;
+        name = record.cliente;
+        email = record.email;
+        phone = record.telefone;
+        status = record.status;
+        plataforma = 'hotmart';
+      }
+      
+      // Se o cliente tem registro na Cakto, priorizar status da Cakto
+      if (!clientStatusMap.has(key)) {
+        clientStatusMap.set(key, {
+          hasCakto: false,
+          hasHotmart: false,
+          caktoStatus: null,
+          hotmartStatus: null
+        });
+      }
+      
+      const clientInfo = clientStatusMap.get(key);
+      
+      if (plataforma === 'cakto') {
+        clientInfo.hasCakto = true;
+        clientInfo.caktoStatus = status;
+      } else {
+        clientInfo.hasHotmart = true;
+        clientInfo.hotmartStatus = status;
+      }
+    });
     
     results.forEach(record => {
       // Determinar chave baseada na plataforma
@@ -428,6 +470,18 @@ app.get('/api/search/grouped', async (req, res) => {
       }
       
       if (!grouped[key]) {
+        // Determinar status prioritário baseado na presença na Cakto
+        const clientInfo = clientStatusMap.get(key);
+        let priorityStatus = status;
+        let priorityPlataforma = plataforma;
+        
+        if (clientInfo.hasCakto) {
+          // Se tem Cakto, priorizar status da Cakto
+          priorityStatus = clientInfo.caktoStatus;
+          priorityPlataforma = 'cakto';
+          console.log(`🔄 Cliente ${key}: Priorizando status Cakto (${priorityStatus}) sobre Hotmart`);
+        }
+        
         grouped[key] = {
           name: name,
           email: email,
@@ -437,12 +491,16 @@ app.get('/api/search/grouped', async (req, res) => {
           state: record.estado || '',
           relevanceScore: record.relevance_score || 0,
           matchType: record.match_type || 'Correspondência parcial',
-          isActive: status?.toLowerCase().includes('paid') || status?.toLowerCase().includes('ativo'),
+          isActive: priorityStatus?.toLowerCase().includes('paid') || 
+                   priorityStatus?.toLowerCase().includes('ativo') || 
+                   priorityStatus?.toLowerCase().includes('approved'),
           history: [],
           totalTransactions: 0,
           totalValue: 0,
           activeSubscriptions: 0,
-          plataforma: plataforma
+          plataforma: priorityPlataforma,
+          hasCakto: clientInfo.hasCakto,
+          hasHotmart: clientInfo.hasHotmart
         };
       }
       
@@ -610,7 +668,7 @@ app.listen(PORT, async () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
   console.log(`📊 API disponível em http://localhost:${PORT}/api`);
   console.log(`🔍 Exemplo de pesquisa: http://localhost:${PORT}/api/search?q=joao`);
-  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido e versão mobile - ${new Date().toISOString()}`);
+  console.log(`🔐 Versão: Sistema com autenticação, checkbox corrigido, versão mobile e prioridade Cakto - ${new Date().toISOString()}`);
   
   // Inicializar banco de dados
   await initializeDatabase();
