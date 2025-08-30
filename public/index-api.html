@@ -478,10 +478,13 @@
         <div class="header">
             <h1>🔍 Pesquisa de Clientes Hotmart</h1>
             <p>Sistema de consulta com banco SQLite - Pesquisa rápida e eficiente</p>
-            <div style="margin-top: 16px;">
+            <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: center;">
                 <a href="/admin" style="color: #4A9EFF; text-decoration: none; font-weight: 500; padding: 8px 16px; border: 1px solid #4A9EFF; border-radius: 6px; transition: all 0.2s ease;">
                     ⚙️ Painel Admin
                 </a>
+                <button id="logoutBtn" style="background: #E91E63; color: white; border: none; font-weight: 500; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease;">
+                    🚪 Logout
+                </button>
             </div>
         </div>
 
@@ -584,6 +587,29 @@
                         this.search(query);
                     }
                 });
+
+                // Event listener para logout
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.logout();
+                });
+            }
+
+            async logout() {
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/login';
+                    }
+                } catch (error) {
+                    console.error('Erro no logout:', error);
+                    window.location.href = '/login';
+                }
             }
 
             async loadStats() {

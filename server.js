@@ -11,6 +11,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -52,6 +53,7 @@ const upload = multer({
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static('public'));
 
 // Função para inicializar banco de dados
@@ -504,9 +506,59 @@ app.get('/api/search/grouped', async (req, res) => {
 });
 
 /**
- * Rota para servir arquivos estáticos do Vue
+ * Middleware para verificar autenticação
  */
-app.get('/', (req, res) => {
+function requireAuth(req, res, next) {
+  // Verificar se há cookie de autenticação
+  const authCookie = req.cookies?.authenticated;
+  
+  if (authCookie === 'true') {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
+/**
+ * Rota de login
+ */
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+/**
+ * Rota para verificar senha
+ */
+app.post('/api/verify-password', (req, res) => {
+  const { password } = req.body;
+  
+  if (password === '517417') {
+    // Definir cookie de autenticação (1 hora)
+    res.cookie('authenticated', 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 1000 // 1 hora
+    });
+    
+    res.json({ success: true, message: 'Login realizado com sucesso' });
+  } else {
+    res.status(401).json({ success: false, message: 'Senha incorreta' });
+  }
+});
+
+/**
+ * Rota para logout
+ */
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('authenticated');
+  res.json({ success: true, message: 'Logout realizado com sucesso' });
+});
+
+/**
+ * Rota principal - página inicial (protegida)
+ */
+app.get('/', requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index-api.html'));
 });
 
